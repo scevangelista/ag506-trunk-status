@@ -1,0 +1,12 @@
+services:
+  collector:
+    build: .
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./log/:/app/log/
+    networks:
+      - default
+
+volumes:
+  persitent:
