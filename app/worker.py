@@ -11,10 +11,10 @@ def validateParams(url, user, password):
     url = html.escape(url)
     user = html.escape(user)
 
-    if len( user ) < 5:
+    if len(user) < 5:
         return {"sucess": False, "message": "The user must have more than 4 characters"}
 
-    if( len( password ) < 5 ):
+    if len(password) < 5:
         return {"sucess": False, "message": "The password must have more than 4 characters"}
 
     oUrl = urlparse(url)
