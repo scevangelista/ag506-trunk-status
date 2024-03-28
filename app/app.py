@@ -13,6 +13,7 @@ app = Flask(__name__)
 logging.basicConfig(filename="./log/worker.log", level=logging.INFO)
 dformat = '%Y-%m-%d_%H:%M:%S'
 
+
 # Collects the data
 @app.route('/collect', methods=['POST'])
 def collect():
@@ -26,7 +27,11 @@ def collect():
         res = getData(url, user, passw)
         print(json.dumps(res))
         logging.info(datetime.now().strftime(dformat)+' - '+json.dumps(res))
-        return json.dumps(res), (200 if res['status'] == True else 500)
+
+        if res['status'] == True:
+            return json.dumps(res), 200
+        else:
+            return json.dumps(res), 500
 
 
 # Returns a message that is working
