@@ -18,7 +18,7 @@ def validateParams(url, user, password):
         return {"sucess": False, "message": "The password must have more than 4 characters"}
 
     oUrl = urlparse(url)
-    if(not(oUrl.geturl())):
+    if not (oUrl.geturl()):
         return {"sucess": False, "message": "The url is invalid"}
 
     return {"sucess": True, "url": oUrl.geturl(), "user": user, "password": password}
@@ -28,7 +28,7 @@ def validateParams(url, user, password):
 def getData(url, user, password):
 
     resVal = validateParams(url, user, password)
-    if not(resVal["sucess"]):
+    if not (resVal["sucess"]):
         return json.dumps(resVal)
 
     # Authenticate to the device and save the session for future requests
