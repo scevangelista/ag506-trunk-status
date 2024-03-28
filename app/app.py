@@ -1,8 +1,9 @@
 import json
 import logging
 
-from flask import Flask, request
 from datetime import datetime
+from flask import Flask, request
+from worker import getData
 
 
 app = Flask(__name__)
@@ -10,6 +11,22 @@ app = Flask(__name__)
 
 # Log
 logging.basicConfig(filename="./log/worker.log", level=logging.INFO)
+
+
+# Collects the data
+@app.route('/collect', methods=['POST'])
+def collect():
+    if request.method == 'POST':
+
+        request_json = request.get_json()
+        url   = request_json.get('url')
+        user  = request_json.get('user')
+        passw = request_json.get('password')
+
+        res = getData( url, user, passw )
+        print( json.dumps(res) )
+        logging.info( datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps(res) )
+        return json.dumps(res), (200 if (res['status'] == True) else 500)
 
 
 # Returns a message that is working
