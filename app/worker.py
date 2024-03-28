@@ -1,6 +1,8 @@
 import html
-
+import json
+import requests
 from urllib.parse import urlparse
+
 
 # Checks received parameters and minimally validates
 def validateParams( url, user, password ):
@@ -18,3 +20,20 @@ def validateParams( url, user, password ):
         return { "sucess": False, "message": "The url is invalid" }
     
     return { "sucess": True, "url": oUrl.geturl(), "user": user, "password": password }
+
+
+# Query the equipment and return normalized data
+def getData( url, user, password ):
+
+    resVal = validateParams( url, user, password )
+    if not( resVal["sucess"] ):
+        return json.dumps( resVal )
+
+    # Authenticate to the device and save the session for future requests
+    session = requests.Session()
+    resAuth = session.post( resVal["url"] + "/app/do.login", { "username": user, "password": password } )
+
+    if resAuth.status_code == 200:
+
+    else:
+        return {"status": False, "message": "Authentication error"}
