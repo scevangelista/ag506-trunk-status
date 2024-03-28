@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # Log
 logging.basicConfig(filename="./log/worker.log", level=logging.INFO)
-
+dformat = '%Y-%m-%d_%H:%M:%S'
 
 # Collects the data
 @app.route('/collect', methods=['POST'])
@@ -25,15 +25,15 @@ def collect():
 
         res = getData(url, user, passw)
         print(json.dumps(res))
-        logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps(res))
-        return json.dumps(res), (200 if (res['status'] == True) else 500)
+        logging.info(datetime.now().strftime(dformat)+' - '+json.dumps(res))
+        return json.dumps(res), (200 if res['status'] == True else 500)
 
 
 # Returns a message that is working
 @app.route('/', methods=['GET'])
 def info():
     print(json.dumps({"status": True, "message": "Working..."}))
-    logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S')+' - '+json.dumps({"status": True, "message": "Working..."}))
+    logging.info(datetime.now().strftime(dformat)+' - '+json.dumps({"status": True, "message": "Working..."}))
     return json.dumps({"status": True, "message": "Working..."})
 
 
@@ -41,5 +41,5 @@ def info():
 @app.errorhandler(404)
 def page_not_found(e):
     print(json.dumps({"status": False, "message": "Resource not found"}))
-    logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S')+' - '+json.dumps({"status": False, "message": "Resource not found"}))
+    logging.info(datetime.now().strftime(dformat)+' - '+json.dumps({"status": False, "message": "Resource not found"}))
     return json.dumps({"status": False, "message": "Resource not found"}), 404
