@@ -1,5 +1,5 @@
 services:
-  colector:
+  collector:
     build: .
     ports:
       - "7000:7000"
