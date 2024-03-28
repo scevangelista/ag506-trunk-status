@@ -19,27 +19,27 @@ def collect():
     if request.method == 'POST':
 
         request_json = request.get_json()
-        url   = request_json.get('url')
-        user  = request_json.get('user')
+        url = request_json.get('url')
+        user = request_json.get('user')
         passw = request_json.get('password')
 
-        res = getData( url, user, passw )
-        print( json.dumps(res) )
-        logging.info( datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps(res) )
+        res = getData(url, user, passw)
+        print(json.dumps(res))
+        logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps(res))
         return json.dumps(res), (200 if (res['status'] == True) else 500)
 
 
 # Returns a message that is working
 @app.route('/', methods=['GET'])
 def info():
-    print( json.dumps( {"status": True, "message": "Working..."} ) )
-    logging.info( datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps( {"status": True, "message": "Working..."} ) )
-    return json.dumps( {"status": True, "message": "Working..."} )
+    print(json.dumps({"status": True, "message": "Working..."}))
+    logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S')+' - '+json.dumps({"status": True, "message": "Working..."}))
+    return json.dumps({"status": True, "message": "Working..."})
 
 
 # Customizes 404
 @app.errorhandler(404)
 def page_not_found(e):
-    print( json.dumps( {"status": False, "message": "Resource not found"} ) )
-    logging.info( datetime.now().strftime('%Y-%m-%d_%H:%M:%S') +' - '+ json.dumps( {"status": False, "message": "Resource not found"} ) )
-    return json.dumps( {"status": False, "message": "Resource not found"} ), 404
+    print(json.dumps({"status": False, "message": "Resource not found"}))
+    logging.info(datetime.now().strftime('%Y-%m-%d_%H:%M:%S')+' - '+json.dumps({"status": False, "message": "Resource not found"}))
+    return json.dumps({"status": False, "message": "Resource not found"}), 404
