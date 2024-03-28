@@ -35,5 +35,13 @@ def getData( url, user, password ):
 
     if resAuth.status_code == 200:
 
+        # Get page with trunk status
+        resData = session.get( resVal["url"] + "/app/do.status" )
+
+        if resData.status_code == 200:
+
+        else:
+            return {"status": False, "message": "Getting status page error"}
+
     else:
         return {"status": False, "message": "Authentication error"}
