@@ -28,7 +28,7 @@ def collect():
         print(json.dumps(res))
         logging.info(datetime.now().strftime(dformat)+' - '+json.dumps(res))
 
-        if res['status'] == True:
+        if res['status']:
             return json.dumps(res), 200
         else:
             return json.dumps(res), 500
