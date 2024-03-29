@@ -1,8 +1,10 @@
+import base64
 import html
 import json
 import requests
 
 from bs4 import BeautifulSoup
+from redis import Redis
 from urllib.parse import urlparse
 
 
@@ -31,10 +33,19 @@ def getData(url, user, password):
     if not (resVal["sucess"]):
         return json.dumps(resVal)
 
-    # Authenticate to the device and save the session for future requests
-    session = requests.Session()
-    resAuth = session.post(resVal["url"]+"/app/do.login", {"username": user, "password": password})
+    # Redis for response cache
+    redis = Redis(host='cache', port=6379)
+    redisKey = (base64.b64encode((url+user+password).encode())).decode()
+    cachedRes = redis.get(redisKey)
 
+    if cachedRes:
+        return json.loads(cachedRes)
+    else:
+        # Authenticate to the device and save the session for future requests
+        session = requests.Session()
+        resAuth = session.post(resVal["url"]+"/app/do.login", {"username": user, "password": password})
+
+    # Continue if session is validate
     if resAuth.status_code == 200:
 
         # Get page with trunk status
@@ -63,6 +74,9 @@ def getData(url, user, password):
                     data[details[0].text.replace(" ", "_").lower()+"_total"] = details[2].text
 
                 res[data["name"]] = data
+
+                # Set cache
+                redis.set(redisKey, json.dumps(res), ex=30)
 
             return res
 
