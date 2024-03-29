@@ -35,8 +35,8 @@ def getData(url, user, password):
 
     # Redis for response cache
     redis = Redis(host='cache', port=6379)
-    redisName = (base64.b64encode((url+user+password).encode('utf8'))).decode('utf8')
-    cachedRes = redis.get(redisName)
+    redisKey = (base64.b64encode((url+user+password).encode('utf8'))).decode('utf8')
+    cachedRes = redis.get(redisKey)
 
     if cachedRes:
         return json.loads(cachedRes)
@@ -76,7 +76,7 @@ def getData(url, user, password):
                 res[data["name"]] = data
 
                 # Set cache
-                redis.set(url+user+password, json.dumps(res), ex=30)
+                redis.set(redisKey, json.dumps(res), ex=30)
 
             return res
 
