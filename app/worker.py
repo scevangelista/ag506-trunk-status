@@ -63,7 +63,7 @@ def getData(url, user, password):
             for trunk in trunks:
 
                 data = {}
-                data["name"] = (trunk.find( "span", attrs={ "class": "hr_text" } ).text).replace(" ", "_")
+                data["name"] = (trunk.find("span", attrs={"class": "hr_text"}).text).replace(" ", "_")
                 data["alarm"] = trunk.find("table", attrs={"class": "e1_alarms"}).find("td").text
                 data["status"] = (True if (data["alarm"] == 'OK') else False)
 
